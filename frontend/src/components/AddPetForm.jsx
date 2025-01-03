@@ -51,7 +51,7 @@ const AddPetForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = document.cookie.split('; ').find(row => row.startsWith('jwt=')).split('=')[1];
+      
       const response = await api.post("/pet/addpet", formData ,{withCredentials: true });
       setMessage("Pet added successfully!");
       setFormData({
