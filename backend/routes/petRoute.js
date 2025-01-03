@@ -16,6 +16,6 @@ const router = express.Router();
 router.route("/").get(getPets);
 router.route("/:id").get(getPetById);
 router.route("/:id").delete(authShelterMiddleware, authShelter, deletePet);
-router.route("/addpet").post( authShelter, addPet);
+router.route("/addpet").post(addPet);
 
 export default router;
