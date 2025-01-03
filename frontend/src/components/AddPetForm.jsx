@@ -61,7 +61,8 @@ const AddPetForm = () => {
       const token = tokenCookie.split('=')[1];
   
       const response = await api.post("/pet/addpet", formData, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
   
       setMessage("Pet added successfully!");
