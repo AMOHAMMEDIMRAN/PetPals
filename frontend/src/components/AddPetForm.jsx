@@ -51,10 +51,19 @@ const AddPetForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = document.cookie.split('; ').find(row => row.startsWith('jwt=')).split('=')[1];
+      const cookies = document.cookie.split('; ');
+      const tokenCookie = cookies.find(row => row.startsWith('jwt='));
+      
+      if (!tokenCookie) {
+        throw new Error("JWT token not found in cookies");
+      }
+      
+      const token = tokenCookie.split('=')[1];
+  
       const response = await api.post("/pet/addpet", formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+  
       setMessage("Pet added successfully!");
       setFormData({
         name: "",
