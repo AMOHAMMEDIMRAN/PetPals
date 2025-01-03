@@ -25,7 +25,7 @@ export const ShelterAuthProvider = ({ children }) => {
     setError(null);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/v1/shelteruser/",
+        "https://petpalsbackend-uzht.onrender.com/api/v1/shelteruser/",
         { username, email, password },
         { withCredentials: true }
       );
