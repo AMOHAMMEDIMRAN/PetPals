@@ -40,7 +40,6 @@ const petSchema = mongoose.Schema(
     photos: [
       {
         type: String,
-        required: true,
       },
     ],
     videos: [

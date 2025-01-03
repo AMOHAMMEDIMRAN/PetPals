@@ -5,11 +5,29 @@ import Shelter from "../models/shelterModel.js";
 
 export const addPet = asyncHandler(async (req, res) => {
   try {
-    const shelterId = req.shelter._id;
+    const shelter = req.shelter; // Use the shelter directly from middleware
 
-    const shelter = await Shelter.findById(shelterId);
     if (!shelter) {
       return res.status(404).json({ message: "Shelter not found" });
+    }
+
+    const requiredFields = [
+      "name",
+      "age",
+      "breed",
+      "size",
+      "color",
+      "gender",
+      "location",
+      "medicalHistory",
+      "description",
+      "adoptionStatus",
+    ];
+
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({ message: `Missing fields: ${missingFields.join(", ")}` });
     }
 
     const {
@@ -40,19 +58,17 @@ export const addPet = asyncHandler(async (req, res) => {
       photos,
       videos,
       adoptionStatus,
-      createdBy: shelterId,
+      createdBy: shelter._id, // Use the shelterId directly from the authenticated shelter
     });
 
     await pet.save();
-
     res.status(201).json(pet);
   } catch (error) {
-    console.error("Error adding pet: ", error);
-    res
-      .status(500)
-      .json({ message: "Failed to add pet", error: error.message });
+    console.error("Error adding pet: ", error.stack); // Log error stack for more details
+    res.status(500).json({ message: "Failed to add pet", error: error.message });
   }
 });
+
 
 export const getPets = asyncHandler(async (req, res) => {
   try {
