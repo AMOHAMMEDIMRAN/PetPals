@@ -13,7 +13,7 @@ const AddPetForm = () => {
     location: "",
     medicalHistory: "",
     description: "",
-    photos: "", 
+    photos: "",
     videos: "",
     adoptionStatus: "",
   });
@@ -37,7 +37,7 @@ const AddPetForm = () => {
       getDownloadURL(snapshot.ref).then((downloadURL) => {
         setFormData({
           ...formData,
-          photos: downloadURL, 
+          photos: downloadURL,
         });
         console.log("Image uploaded successfully. URL:", downloadURL);
       }).catch((error) => {
@@ -51,7 +51,10 @@ const AddPetForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/pet/addpet", formData);
+      const token = document.cookie.split('; ').find(row => row.startsWith('jwt=')).split('=')[1];
+      const response = await api.post("/pet/addpet", formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setMessage("Pet added successfully!");
       setFormData({
         name: "",
@@ -63,21 +66,22 @@ const AddPetForm = () => {
         location: "",
         medicalHistory: "",
         description: "",
-        photos: "",  
+        photos: "",
         videos: "",
         adoptionStatus: "",
       });
     } catch (err) {
-      setError("Failed to add pet: " + err.message);
+      setError("Failed to add pet: " + (err.response?.data?.message || err.message));
     }
   };
 
   return (
-    <div className="add-pet-form w-[50%] mx-auto my-5 ">
+    <div className="add-pet-form w-[50%] mx-auto my-5">
       <h2 className="text-center text-[#B71C1C]">Add New Pet</h2>
       {message && <div className="success-message bg-[#FFCDD2] text-[#D32F2F] p-4 rounded-md">{message}</div>}
       {error && <div className="error-message bg-[#FFCDD2] text-[#B71C1C] p-4 rounded-md">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Form fields */}
         <div>
           <label htmlFor="name" className="text-[#D32F2F]">Name:</label>
           <input
@@ -195,17 +199,6 @@ const AddPetForm = () => {
             required
           />
         </div>
-        {/* <div>
-          <label htmlFor="videos" className="text-[#D32F2F]">Videos:</label>
-          <input
-            type="text"
-            id="videos"
-            name="videos"
-            value={formData.videos}
-            onChange={handleChange}
-            className="block w-full px-4 py-2 mt-1 text-[#B71C1C] placeholder-[#FF8A80] bg-[#FFCDD2] border border-[#B71C1C] rounded-md focus:border-[#D32F2F] focus:ring-[#D32F2F] focus:outline-none"
-          />
-        </div> */}
         <div>
           <label htmlFor="adoptionStatus" className="text-[#D32F2F]">Adoption Status: Available/Adopted</label>
           <input
