@@ -5,17 +5,17 @@ import {
   getPetById,
   deletePet,
 } from "../controllers/petController.js";
-import {
-  authShelterMiddleware,
-  authShelter,
-} from "../middlewares/authMiddleware.js";
+// import {
+//   authShelterMiddleware,
+//   authShelter,
+// } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 
 router.route("/").get(getPets);
 router.route("/:id").get(getPetById);
-router.route("/:id").delete(authShelterMiddleware, authShelter, deletePet);
-router.route("/addpet").post(authShelterMiddleware,authShelter, addPet);
+router.route("/:id").delete(deletePet);
+router.route("/addpet").post(addPet);
 
 export default router;
