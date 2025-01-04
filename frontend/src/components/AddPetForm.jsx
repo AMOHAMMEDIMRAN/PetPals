@@ -51,8 +51,8 @@ const AddPetForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      
-      const response = await api.post("/pet/addpet", formData ,{withCredentials: true });
+      console.log("Form data:", formData);
+      const response = await api.post("/pet/addpet", formData, { withCredentials: true });
       setMessage("Pet added successfully!");
       setFormData({
         name: "",
@@ -69,6 +69,7 @@ const AddPetForm = () => {
         adoptionStatus: "",
       });
     } catch (err) {
+      console.error("Failed to add pet:", err);
       setError("Failed to add pet: " + err.message);
     }
   };
