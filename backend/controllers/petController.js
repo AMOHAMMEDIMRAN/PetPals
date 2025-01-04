@@ -6,6 +6,7 @@ import Shelter from "../models/shelterModel.js";
 export const addPet = asyncHandler(async (req, res) => {
   try {
     const shelter = req.shelter; // Use the shelter directly from middleware
+    console.log('Shelter in addPet:', shelter); // Add this log
 
     if (!shelter) {
       return res.status(404).json({ message: "Shelter not found" });

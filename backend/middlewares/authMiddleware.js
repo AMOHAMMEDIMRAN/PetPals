@@ -32,6 +32,7 @@ export const authShelterMiddleware = asyncHandler(async (req, res, next) => {
       if (!req.shelter) {
         return res.status(404).json({ message: "Shelter not found" });
       }
+      console.log('Shelter authenticated:', req.shelter); // Add this log
       next();
     } catch (error) {
       res.status(401).json({ message: "Not authorized, token failed" });
